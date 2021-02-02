@@ -33,9 +33,18 @@ const renderSpinner = function (parentEl) {
 
 const showRecipe = async function () {
   try {
+
+    const id = window.location.hash.slice(1);
+    console.log(id);
+
+    if (!id) return // using guards closes is the modern way of performing this task 
+    // old style is using if(id) what require to nest everything bellow. 
+
     //1) loading recipe
     renderSpinner(recipeContainer);
-    const res = await fetch('https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886');
+    const res = await fetch(
+      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
+    );
     const data = await res.json();
 
     if (!res.ok) throw new Error(`${data.message} (${res.status})`)
@@ -158,4 +167,9 @@ const showRecipe = async function () {
 
 showRecipe();
 
-fetch('https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886')
+fetch('https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886');
+
+
+['hashchange', 'load'].forEach(ev => window.addEventListener(ev, showRecipe))
+// window.addEventListener('hashchange', showRecipe);
+// window.addEventListener('load', showRecipe);
