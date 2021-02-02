@@ -1,0 +1,24 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "This project is part of my studies base on the Udemy course: https://www.udemy.com/course/the-complete-javascript-course/",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pat-On/studyProjectForkify.git"
+  },
+  "author": "Patryk Nowak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pat-On/studyProjectForkify/issues"
+  },
+  "homepage": "https://github.com/Pat-On/studyProjectForkify#readme",
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.1",
+    "sass": "^1.32.6"
+  }
+}
