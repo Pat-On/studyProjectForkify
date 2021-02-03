@@ -4,6 +4,9 @@ import recipeView from "./views/recipeView.js";
 import searchView from "./views/searchView.js";
 import resultsView from "./views/resultsView.js";
 
+// why after importing paginationView everything is going crazy lol?
+import paginationView from './views/paginationView.js'
+
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
@@ -45,10 +48,12 @@ const controlRecipes = async function () {
 
 
     // 2) rendering recipe
-    // render is very common and self descriptive
+
 
     recipeView.render(model.state.recipe);
-
+    // render is very common and self descriptive
+    //by this we are going to as well pass the data to the view via parent class
+    // paginationView.render(mode.state.search)
   } catch (err) {
     recipeView.renderError();
   }
@@ -71,9 +76,16 @@ const controlSearchResults = async function () {
     await model.loadSearchResults(query);
     //3) Render results
     // console.log(model.state.search.results);
+
     // resultsView.render(model.state.search.results);
     // console.log(model.getSearchResultsPage(1));
-    resultsView.render(model.getSearchResultsPage())
+
+
+    resultsView.render(model.getSearchResultsPage(4));
+    // resultsView.render(model.state.search.results);
+    //4 render initial pagination buttons
+    paginationView.render(model.state.search);
+
   } catch (err) {
     console.log(err)
   }
