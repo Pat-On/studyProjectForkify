@@ -121,6 +121,8 @@ const init = function () {
 init();
 console.log(state.bookmark);
 
+
+//function dev f.
 const clearBookmarks = function () {
     localStorage.clear('Bookmarks');
 };
