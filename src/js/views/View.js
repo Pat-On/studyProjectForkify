@@ -3,11 +3,14 @@ import icons from 'url:../../img/icons.svg'; // Parcel 2 syntax
 export default class View {
     _data;
 
-    render(data) {
+    render(data, render = true) {
         if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError(); //only for undefined or null - !data so we have to do second part of logic
         // console.log(data)
         this._data = data;
         const markup = this._generateMarkup();
+
+        if (!render) return markup;
+
         this._clear();
         this._parentElement.insertAdjacentHTML('afterbegin', markup);
     }

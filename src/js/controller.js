@@ -3,7 +3,7 @@ import * as model from './model.js';
 import recipeView from "./views/recipeView.js";
 import searchView from "./views/searchView.js";
 import resultsView from "./views/resultsView.js";
-
+import bookmarksView from "./views/bookmarksView.js";
 // why after importing paginationView everything is going crazy lol?
 import paginationView from './views/paginationView.js'
 
@@ -41,6 +41,7 @@ const controlRecipes = async function () {
 
     //0) update results view to mark selected search results
     resultsView.update(model.getSearchResultsPage());
+    bookmarksView.update(model.state.bookmarks);
 
     //1) loading recipe
 
@@ -124,10 +125,14 @@ const controlServings = function (newServings) {
 }
 
 const controlAddBookmark = function () {
+  //1 Add/remove bookmark
   if (!model.state.recipe.bookmarked) model.addBookmarks(model.state.recipe);
   else model.deleteBookmark(model.state.recipe.id);
-  console.log(model.state.recipe);
+  //2 update recipe view
   recipeView.update(model.state.recipe);
+  // render bookmarks
+  bookmarksView.render(model.state.bookmarks);
+
 };
 
 

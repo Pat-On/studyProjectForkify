@@ -1,4 +1,5 @@
 import View from './View.js';
+import previewView from './previewView.js'
 // import icons from 'url:../../img/icons.svg'; // Parcel 2 syntax 
 
 class ResultsView extends View {
@@ -10,28 +11,41 @@ class ResultsView extends View {
     console.log("Im in generete markup")
     console.log(this._data)
 
-    return this._data.map(this._generateMarkupPreview).join('');
+    return this._data
+      .map(result => previewView.render(result, false))
+      .join('');
 
   }
 
-  _generateMarkupPreview(result) {
-    const id = window.location.hash.slice(1);
 
-    return `
-        <li class="preview">
-            <a class="preview__link ${result.id === id ? 'preview__link--active' : ''
-      }" href="#${result.id}">
-              <figure class="preview__fig">
-                <img src="${result.image}" alt="${result.title}" />
-              </figure>
-              <div class="preview__data">
-                <h4 class="preview__title">${result.title}</h4>
-                <p class="preview__publisher">${result.publisher}</p>
-              </div>
-            </a>
-        </li>
-        `
-  }
+  // _generateMarkup() {
+  //   console.log("Im in generate markup")
+  //   console.log(this._data)
+
+  //   return this._data.map(this._generateMarkupPreview).join('');
+
+  // }
+
+
+
+  // _generateMarkupPreview(result) {
+  //   const id = window.location.hash.slice(1);
+
+  //   return `
+  //       <li class="preview">
+  //           <a class="preview__link ${result.id === id ? 'preview__link--active' : ''
+  //     }" href="#${result.id}">
+  //             <figure class="preview__fig">
+  //               <img src="${result.image}" alt="${result.title}" />
+  //             </figure>
+  //             <div class="preview__data">
+  //               <h4 class="preview__title">${result.title}</h4>
+  //               <p class="preview__publisher">${result.publisher}</p>
+  //             </div>
+  //           </a>
+  //       </li>
+  //       `
+  // }
 }
 
 export default new ResultsView(); // to have like before only one results, without not needed multiplications
