@@ -123,11 +123,21 @@ const controlServings = function (newServings) {
   // 
 }
 
+const controlAddBookmark = function () {
+  if (!model.state.recipe.bookmarked) model.addBookmarks(model.state.recipe);
+  else model.deleteBookmark(model.state.recipe.id);
+  console.log(model.state.recipe);
+  recipeView.update(model.state.recipe);
+};
+
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
+  recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+
   // controlServings(); // we can not do it here because the data coming from async! 
 }
 init();

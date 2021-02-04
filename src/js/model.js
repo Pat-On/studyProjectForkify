@@ -10,6 +10,7 @@ export const state = {
         page: 1,
         resultsPerPage: RES_PER_PAGE,
     },
+    bookmarks: [],
 
 };
 
@@ -19,7 +20,7 @@ export const loadRecipe = async function (id) {
         const data = await getJSON(`${API_URL}/${id}`);
 
         const { recipe } = data.data;
-        console.log(data)
+        // console.log(data)
         state.recipe = {
             id: recipe.id,
             title: recipe.title,
@@ -30,7 +31,11 @@ export const loadRecipe = async function (id) {
             cookingTime: recipe.cooking_time,
             ingredients: recipe.ingredients,
         };
-
+        // this is if-else statement which is going to add state.recipe.bookmarked to the recipe, and by this we are
+        // not have to render it from api and to lose the 'bookrmarked' 
+        if (state.bookmarks.some(bookmark => bookmark.id === id))
+            state.recipe.bookmarked = true;
+        else state.recipe.bookmarked = false;
 
         console.log("29 model.js" + state.recipe.title)
     } catch (err) {
@@ -42,6 +47,7 @@ export const loadRecipe = async function (id) {
 
 export const loadSearchResults = async function (query) {
     try {
+
         state.search.query = query;
         const data = await getJSON(`${API_URL}?search=${query}&key=523506ae-f785-4722-b41e-bd263ffff64b`)
         // console.log(data);
@@ -56,6 +62,7 @@ export const loadSearchResults = async function (query) {
             }
         })
         // console.log(state.search.results)
+        state.search.page = 1;
     } catch (err) {
         console.error(`${err} xD xD xD xD`);
         throw err;
@@ -63,6 +70,7 @@ export const loadSearchResults = async function (query) {
 };
 // this is not going to be async because we already have the data
 export const getSearchResultsPage = function (page = state.search.page) {
+
     state.search.page = page;
 
     const start = (page - 1) * state.search.resultsPerPage //0;
@@ -79,3 +87,21 @@ export const updateServings = function (newServings) {
     });
     state.recipe.servings = newServings; // at the end because we are going to need them to make calc - old one
 };
+
+export const addBookmarks = function (recipe) {
+    //Add bookmark 
+    state.bookmarks.push(recipe);
+
+    //mark current recipe as bookmarks
+    if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+};
+//this is common pattern in programming, when we are adding something we want to use entire data, but 
+//when we delete something, we use only ID 
+export const deleteBookmark = function (id) {
+    //DELETE BOOKMARKS
+    const index = state.bookmarks.findIndex(el => el.id === id);
+    state.bookmarks.splice(index, 1);
+
+    //mark current recipe as NOT bookmarks
+    if (id === state.recipe.id) state.recipe.bookmarked = false;
+}

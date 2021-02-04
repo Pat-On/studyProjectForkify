@@ -22,8 +22,8 @@ export default class View {
         const newElements = Array.from(newDom.querySelectorAll('*'));
         //curent elements + conversion to array like before
         const curElements = Array.from(this._parentElement.querySelectorAll('*'));
-        console.log(newElements);
-        console.log(curElements);
+        // console.log(newElements);
+        // console.log(curElements);
 
         newElements.forEach((newEl, i) => {
             const curEl = curElements[i];
