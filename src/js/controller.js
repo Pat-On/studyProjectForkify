@@ -41,7 +41,7 @@ const controlRecipes = async function () {
 
     //0) update results view to mark selected search results
     resultsView.update(model.getSearchResultsPage());
-    bookmarksView.update(model.state.bookmarks);
+
 
     //1) loading recipe
 
@@ -63,6 +63,9 @@ const controlRecipes = async function () {
     // render is very common and self descriptive
     //by this we are going to as well pass the data to the view via parent class
     // paginationView.render(mode.state.search)
+    // debugger;
+    // bookmarks update
+    bookmarksView.update(model.state.bookmarks);
   } catch (err) {
     recipeView.renderError();
   }
@@ -135,8 +138,11 @@ const controlAddBookmark = function () {
 
 };
 
-
+const controlBookmarks = function () {
+  bookmarksView.render(model.state.bookmarks);
+}
 const init = function () {
+  bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
   recipeView.addHandlerAddBookmark(controlAddBookmark);

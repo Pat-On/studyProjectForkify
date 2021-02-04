@@ -88,12 +88,18 @@ export const updateServings = function (newServings) {
     state.recipe.servings = newServings; // at the end because we are going to need them to make calc - old one
 };
 
+const persistBookmarks = function () {
+    localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+}
+
+
 export const addBookmarks = function (recipe) {
     //Add bookmark 
     state.bookmarks.push(recipe);
 
     //mark current recipe as bookmarks
     if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+    persistBookmarks();
 };
 //this is common pattern in programming, when we are adding something we want to use entire data, but 
 //when we delete something, we use only ID 
@@ -104,4 +110,17 @@ export const deleteBookmark = function (id) {
 
     //mark current recipe as NOT bookmarks
     if (id === state.recipe.id) state.recipe.bookmarked = false;
-}
+    persistBookmarks();
+};
+
+const init = function () {
+    const storage = localStorage.getItem('bookmarks');
+    if (storage) state.bookmarks = JSON.parse(storage);
+};
+
+init();
+console.log(state.bookmark);
+
+const clearBookmarks = function () {
+    localStorage.clear('Bookmarks');
+};
