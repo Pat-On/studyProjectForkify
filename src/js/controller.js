@@ -39,6 +39,9 @@ const controlRecipes = async function () {
     // old style is using if(id) what require to nest everything bellow. 
     recipeView.renderSpinner();
 
+    //0) update results view to mark selected search results
+    resultsView.update(model.getSearchResultsPage());
+
     //1) loading recipe
 
     //this is example async function calling another async function
@@ -115,7 +118,8 @@ const controlServings = function (newServings) {
   // update the recipe servings (in state - underling data)
   model.updateServings(newServings);
   //update the recipe view - because servings are going to change -
-  recipeView.render(model.state.recipe);
+  // recipeView.render(model.state.recipe);
+  recipeView.update(model.state.recipe);
   // 
 }
 
