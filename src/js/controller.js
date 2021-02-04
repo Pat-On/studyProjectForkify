@@ -51,6 +51,11 @@ const controlRecipes = async function () {
 
 
     recipeView.render(model.state.recipe);
+
+    //TEST 
+    // controlServings()
+
+
     // render is very common and self descriptive
     //by this we are going to as well pass the data to the view via parent class
     // paginationView.render(mode.state.search)
@@ -105,9 +110,20 @@ const controlPagination = function (goToPage) {
   paginationView.render(model.state.search);
 }
 
+
+const controlServings = function (newServings) {
+  // update the recipe servings (in state - underling data)
+  model.updateServings(newServings);
+  //update the recipe view - because servings are going to change -
+  recipeView.render(model.state.recipe);
+  // 
+}
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
+  recipeView.addHandlerUpdateServings(controlServings);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  // controlServings(); // we can not do it here because the data coming from async! 
 }
 init();
