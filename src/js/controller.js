@@ -10,6 +10,8 @@ import paginationView from './views/paginationView.js';
 //we need to import it to make the code run - module
 import addRecipeView from './views/addRecipeView.js';
 
+import { MODAL_CLOSE_SEC } from './config.js'
+
 console.log(addRecipeView)
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
@@ -145,10 +147,30 @@ const controlBookmarks = function () {
   bookmarksView.render(model.state.bookmarks);
 };
 
-const controlAddRecipe = function (newRecipe) {
-  console.log(newRecipe);
+const controlAddRecipe = async function (newRecipe) {
+  try {
+    //Show loading spinner
+    addRecipeView.renderSpinner();
 
-  // upload the new recipe data
+
+    // upload the new recipe data
+    await model.uploadRecipe(newRecipe);
+    console.log(model.state.recipe)
+    // Render
+    recipeView.render(model.state.recipe);
+
+    //success message
+    addRecipeView.renderMessage();
+
+
+    //close the window
+    setTimeout(function () {
+      addRecipeView.toggleWindow()
+    }, MODAL_CLOSE_SEC * 1000);
+  } catch (err) {
+    console.error("it is my error from controller" + err);
+    addRecipeView.renderError(err.message)
+  }
 };
 
 const init = function () {
