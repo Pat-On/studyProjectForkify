@@ -4,6 +4,9 @@ This project is part of my studies base on the Udemy course: https://www.udemy.c
 
 Check it here:
 
+tofix: 
+.ev
+
 
 IMPROVEMENT AND FEATURE IDEAS: CHALLENGES 
 
