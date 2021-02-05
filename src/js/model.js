@@ -1,6 +1,6 @@
 import { async } from 'regenerator-runtime';
 import { API_URL, RES_PER_PAGE, KEY } from './config.js'
-import { getJSON, sendJSON } from './helpers.js'
+import { AJAX } from './helpers.js'
 import recipeView from './views/recipeView.js';
 
 export const state = {
@@ -16,7 +16,7 @@ export const state = {
 };
 
 const createRecipeObject = function (data) {
-    const { recipe } = data.data
+    const { recipe } = data.data;
     return state.recipe = {
         id: recipe.id,
         title: recipe.title,
@@ -33,7 +33,7 @@ const createRecipeObject = function (data) {
 // this function is going to change only state object
 export const loadRecipe = async function (id) {
     try {
-        const data = await getJSON(`${API_URL}/${id}`);
+        const data = await AJAX(`${API_URL}/${id}?key=${KEY}`);
         state.recipe = createRecipeObject(data);
         const { recipe } = data.data;
         // console.log(data)
@@ -56,7 +56,7 @@ export const loadSearchResults = async function (query) {
     try {
 
         state.search.query = query;
-        const data = await getJSON(`${API_URL}?search=${query}&key=523506ae-f785-4722-b41e-bd263ffff64b`)
+        const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`)
         // console.log(data);
 
         state.search.results = data.data.recipes.map(rec => {
@@ -65,6 +65,7 @@ export const loadSearchResults = async function (query) {
                 title: rec.title,
                 publisher: rec.publisher,
                 image: rec.image_url,
+                ...(rec.key && { key: rec.key }),
 
             }
         })
@@ -142,7 +143,8 @@ export const uploadRecipe = async function (newRecipe) {
         const ingredients = Object.entries(newRecipe)
             .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== "")
             .map(ing => {
-                const ingArr = ing[1].replaceAll(" ", "").split(','); //nice logic
+                const ingArr = ing[1].split(',').map(el => el.trim()) //better solution
+                // const ingArr = ing[1].replaceAll(" ", "").split(','); //nice logic but finally we got error
                 if (ingArr.length !== 3)
                     throw new Error("Wrong ingredient format! Please use the correct one!");
 
@@ -150,7 +152,8 @@ export const uploadRecipe = async function (newRecipe) {
 
                 return { quantity: quantity ? +quantity : null, unit, description }; //nice!
             });
-        console.log(newRecipe);
+        // console.log(newRecipe);
+
         const recipe = {
             title: newRecipe.title,
             source_url: newRecipe.sourceUrl,
@@ -160,9 +163,9 @@ export const uploadRecipe = async function (newRecipe) {
             servings: +newRecipe.servings,
             ingredients,
         };
-        console.log(recipe)
-        const data = await sendJSON(`${API_URL}?key=${KEY}`, recipe);
-        console.log(data);
+        // console.log(recipe)
+        const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
+        // console.log(data);
         state.recipe = createRecipeObject(data);
         addBookmarks(state.recipe);
 
