@@ -5,9 +5,12 @@ import searchView from "./views/searchView.js";
 import resultsView from "./views/resultsView.js";
 import bookmarksView from "./views/bookmarksView.js";
 // why after importing paginationView everything is going crazy lol?
-import paginationView from './views/paginationView.js'
+import paginationView from './views/paginationView.js';
 
+//we need to import it to make the code run - module
+import addRecipeView from './views/addRecipeView.js';
 
+console.log(addRecipeView)
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
@@ -140,7 +143,14 @@ const controlAddBookmark = function () {
 
 const controlBookmarks = function () {
   bookmarksView.render(model.state.bookmarks);
-}
+};
+
+const controlAddRecipe = function (newRecipe) {
+  console.log(newRecipe);
+
+  // upload the new recipe data
+};
+
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
@@ -148,7 +158,7 @@ const init = function () {
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
-
+  addRecipeView.addHandlerUpload(controlAddRecipe);
   // controlServings(); // we can not do it here because the data coming from async! 
 }
 init();
