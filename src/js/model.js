@@ -36,15 +36,12 @@ export const loadRecipe = async function (id) {
         const data = await AJAX(`${API_URL}/${id}?key=${KEY}`);
         state.recipe = createRecipeObject(data);
         const { recipe } = data.data;
-        // console.log(data)
-
         // this is if-else statement which is going to add state.recipe.bookmarked to the recipe, and by this we are
         // not have to render it from api and to lose the 'bookrmarked' 
         if (state.bookmarks.some(bookmark => bookmark.id === id))
             state.recipe.bookmarked = true;
         else state.recipe.bookmarked = false;
 
-        console.log("29 model.js" + state.recipe.title)
     } catch (err) {
         //temp error handling
         console.error(`${err} xD xD xD xD`);
@@ -54,10 +51,8 @@ export const loadRecipe = async function (id) {
 
 export const loadSearchResults = async function (query) {
     try {
-
         state.search.query = query;
         const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`)
-        // console.log(data);
 
         state.search.results = data.data.recipes.map(rec => {
             return {
@@ -66,10 +61,9 @@ export const loadSearchResults = async function (query) {
                 publisher: rec.publisher,
                 image: rec.image_url,
                 ...(rec.key && { key: rec.key }),
-
             }
         })
-        // console.log(state.search.results)
+
         state.search.page = 1;
     } catch (err) {
         console.error(`${err} xD xD xD xD`);
@@ -127,14 +121,11 @@ const init = function () {
 };
 
 init();
-// console.log(state.bookmark);
-
 
 //function dev f.
 const clearBookmarks = function () {
     localStorage.clear('Bookmarks');
 };
-
 
 //uploading recipe to the API
 //it is going to send data across net so has to be async 
@@ -152,7 +143,6 @@ export const uploadRecipe = async function (newRecipe) {
 
                 return { quantity: quantity ? +quantity : null, unit, description }; //nice!
             });
-        // console.log(newRecipe);
 
         const recipe = {
             title: newRecipe.title,
@@ -163,9 +153,9 @@ export const uploadRecipe = async function (newRecipe) {
             servings: +newRecipe.servings,
             ingredients,
         };
-        // console.log(recipe)
+
         const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
-        // console.log(data);
+
         state.recipe = createRecipeObject(data);
         addBookmarks(state.recipe);
 

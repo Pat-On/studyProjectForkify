@@ -1,8 +1,6 @@
 import View from './View.js';
 import icons from 'url:../../img/icons.svg'; // Parcel 2 syntax
 
-// let parentElement = document.querySelector('.pagination');
-// console.log(parentElement)
 class AddRecipeView extends View {
     _parentElement = document.querySelector('.upload');
     _message = 'Recipe was successfully uploaded!';
@@ -42,7 +40,7 @@ class AddRecipeView extends View {
         this._parentElement.addEventListener('submit', function (e) {
             e.preventDefault();
             const dataArr = [...new FormData(this)]; // this is form element because we are in the parent element.
-            // console.log(data);
+
             //ES 2019 - converting data array to data object !IMPORTANT
             const data = Object.fromEntries(dataArr);
             handler(data);

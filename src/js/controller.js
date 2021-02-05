@@ -21,24 +21,12 @@ if (module.hot) {
   module.hot.accept();
 };
 
-
 const recipeContainer = document.querySelector('.recipe');
-// console.log("??" + recipeContainer);
-
-
-
-// https://forkify-api.herokuapp.com/v2
-
-///////////////////////////////////////
-
-
-
 
 const controlRecipes = async function () {
   try {
 
     const id = window.location.hash.slice(1);
-    console.log(id);
 
     if (!id) return // using guards closes is the modern way of performing this task 
     // old style is using if(id) what require to nest everything bellow. 
@@ -47,23 +35,13 @@ const controlRecipes = async function () {
     //0) update results view to mark selected search results
     resultsView.update(model.getSearchResultsPage());
 
-
     //1) loading recipe
-
     //this is example async function calling another async function
     await model.loadRecipe(id); // we will just get accec to the state.recipe manipulated inside the 'mode'
     // const { recipe } = model.state;
-    // console.log(recipe)
-
 
     // 2) rendering recipe
-
-
     recipeView.render(model.state.recipe);
-
-    //TEST 
-    // controlServings()
-
 
     // render is very common and self descriptive
     //by this we are going to as well pass the data to the view via parent class
@@ -78,25 +56,17 @@ const controlRecipes = async function () {
 
 controlRecipes();
 
-// fetch('https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886');
 
 const controlSearchResults = async function () {
   try {
     resultsView.renderSpinner();
     // 1) Get search query
     const query = searchView.getQuery();
-    // console.log(query)
     if (!query) return;
-
 
     //2) Load search
     await model.loadSearchResults(query);
     //3) Render results
-    // console.log(model.state.search.results);
-
-    // resultsView.render(model.state.search.results);
-    // console.log(model.getSearchResultsPage(1));
-
 
     resultsView.render(model.getSearchResultsPage());
     // resultsView.render(model.state.search.results);
@@ -110,18 +80,12 @@ const controlSearchResults = async function () {
 
 const controlPagination = function (goToPage) {
   //3) Render new  results
-  // console.log(model.state.search.results);
-
   // resultsView.render(model.state.search.results);
-  // console.log(model.getSearchResultsPage(1));
-
-
   resultsView.render(model.getSearchResultsPage(goToPage));
   // resultsView.render(model.state.search.results);
   //4 render initial pagination buttons
   paginationView.render(model.state.search);
 }
-
 
 const controlServings = function (newServings) {
   // update the recipe servings (in state - underling data)
@@ -129,7 +93,6 @@ const controlServings = function (newServings) {
   //update the recipe view - because servings are going to change -
   // recipeView.render(model.state.recipe);
   recipeView.update(model.state.recipe);
-  // 
 }
 
 const controlAddBookmark = function () {
@@ -140,7 +103,6 @@ const controlAddBookmark = function () {
   recipeView.update(model.state.recipe);
   // render bookmarks
   bookmarksView.render(model.state.bookmarks);
-
 };
 
 const controlBookmarks = function () {
@@ -151,7 +113,6 @@ const controlAddRecipe = async function (newRecipe) {
   try {
     //Show loading spinner
     addRecipeView.renderSpinner();
-
 
     // upload the new recipe data
     await model.uploadRecipe(newRecipe);
@@ -164,7 +125,6 @@ const controlAddRecipe = async function (newRecipe) {
 
     //render bookmark view
     bookmarksView.render(model.state.bookmarks);
-
 
     //change id in URL
     window.history.pushState(null, '', `#${model.state.recipe.id}`);
